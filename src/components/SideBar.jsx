@@ -4,7 +4,7 @@ import CategoryList from './CategoryList';
 
 export default function SideBar(props) {
   /* ADIM 4: App component'inden gelen propları burada destruct edelim. aynı isimlerle kullanalım */
-
+  const { category, handleCatChange } = props;
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {

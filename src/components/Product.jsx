@@ -1,12 +1,35 @@
-export default function Product(props) {
-  const { product } = props;
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+import ProductList from '../components/ProductList';
+
+export default function Products(props) {
+  /* ADIM 5: App component'inden gelen propu burada destruct edelim. Aynı isimle kullanalım */
+  const {category} = props;
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    axios
+      .get(
+        'https://fakestoreapi.com/products/category/' + category.toLowerCase()
+      )
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },[category]);
+
+  /* ADIM 6: category prop'unun değişmesine bağlı olarak useEffect kullanalım ve kategorideki ürünleri getiren bir request yazalım. 
+  İlgili Kategoriye ait ürünleri almak için 'https://fakestoreapi.com/products/category/jewelery' şeklinde endpoint'e istek atalım ve response'daki data'yı products state'ine ekleyelim.
+  */
 
   return (
-    <div className="product-card">
-      <img src={product.image} />
-      <h3>{product.title}</h3>
-      <p>{product.description}</p>
-      <p>{product.price}$</p>
+    <div className="main-area">
+      {<h2>{category.toUpperCase()}</h2>}
+      <div className="products-container">
+        <ProductList products={products} />
+      </div>
     </div>
   );
 }
